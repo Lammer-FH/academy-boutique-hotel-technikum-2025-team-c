@@ -1,3 +1,14 @@
+<script setup>
+import { ref } from "vue";
+
+const open = ref(false);
+
+const links = [
+  { text: "ZIMMER", to: "/rooms", icon: "rooms" },
+  { text: "ÜBER UNS", to: "/about", icon: "about" },
+];
+</script>
+
 <template>
   <nav class="bg-white shadow">
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
@@ -131,7 +142,7 @@
         <div class="pt-2 pb-3 space-y-1 px-2">
           <router-link
             v-for="link in links"
-            :key="link.text + '-mobile'"
+            :key="link.text"
             :to="link.to"
             class="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
           >
@@ -214,14 +225,3 @@
     </transition>
   </nav>
 </template>
-
-<script setup>
-import { ref } from "vue";
-
-const open = ref(false);
-
-const links = [
-  { text: "ZIMMER", to: "/rooms", icon: "rooms" },
-  { text: "ÜBER UNS", to: "/about", icon: "about" },
-];
-</script>
