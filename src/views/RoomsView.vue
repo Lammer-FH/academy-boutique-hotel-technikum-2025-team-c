@@ -1,3 +1,7 @@
-<script setup></script>
+<script setup>
+import RoomsList from "../components/RoomsList.vue";
+</script>
 
-<template></template>
+<template>
+  <RoomsList></RoomsList>
+</template>
