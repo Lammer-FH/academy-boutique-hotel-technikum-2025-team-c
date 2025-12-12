@@ -31,6 +31,7 @@ const formData = ref({
   // Pre-fill confirm to match email so validation passes when returning
   confirmEmail: bookingStore.customerDraft?.email || "",
   birthdate: bookingStore.customerDraft?.birthdate || "",
+  breakfast: "",
 });
 
 const error = ref(null);
@@ -154,6 +155,31 @@ watch(
           required
           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
+      </div>
+      <div>
+        <span class="block text-sm font-medium mb-1">Frühstück</span>
+        <div class="flex items-center gap-6">
+          <label class="inline-flex items-center gap-2">
+            <input
+              type="radio"
+              name="breakfast"
+              value="Ja"
+              v-model="formData.breakfast"
+              class="text-blue-600 focus:ring-blue-500"
+            />
+            <span>Ja</span>
+          </label>
+          <label class="inline-flex items-center gap-2">
+            <input
+              type="radio"
+              name="breakfast"
+              value="Nein"
+              v-model="formData.breakfast"
+              class="text-blue-600 focus:ring-blue-500"
+            />
+            <span>Nein</span>
+          </label>
+        </div>
       </div>
 
       <div
