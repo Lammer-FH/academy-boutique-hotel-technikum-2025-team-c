@@ -19,6 +19,29 @@ export const useBookingStore = defineStore("booking", {
   }),
 
   actions: {
+    async fetchBookings() {
+      this.loading = true;
+      this.error = null;
+      try {
+        const { data, status, statusText } = await axios.get(
+          `https://boutique-hotel.helmuth-lammer.at/api/v1/bookings`,
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        if (status < 200 || status >= 300) {
+          throw new Error(`Fetch bookings failed: ${statusText}`);
+        }
+        // Expecting data to be an array of bookings
+        this.bookings = Array.isArray(data) ? data : [];
+        return this.bookings;
+      } catch (error) {
+        this.error = error?.response?.data?.message || error.message;
+        throw error;
+      } finally {
+        this.loading = false;
+      }
+    },
     async bookRoom(roomId, fromDate, toDate, formData) {
       this.loading = true;
       this.error = null;
