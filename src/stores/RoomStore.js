@@ -8,6 +8,9 @@ export const useRoomStore = defineStore("room", {
     rooms: [],
     availableRooms: [],
     isLoadingAvailability: false,
+    selectedRoom: null,
+    selectedFromDate: null,
+    selectedToDate: null,
   }),
   actions: {
     fetchRooms() {
@@ -21,11 +24,6 @@ export const useRoomStore = defineStore("room", {
         });
     },
     async fetchAvailableRooms(from, to) {
-      if (!from || !to) {
-        this.availableRooms = [];
-        return;
-      }
-
       this.isLoadingAvailability = true;
 
       try {
@@ -54,6 +52,13 @@ export const useRoomStore = defineStore("room", {
       } finally {
         this.isLoadingAvailability = false;
       }
+    },
+    setSelectedRoom(room) {
+      this.selectedRoom = room;
+    },
+    setSelectedDates(from, to) {
+      this.selectedFromDate = from;
+      this.selectedToDate = to;
     },
   },
 });

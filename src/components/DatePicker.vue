@@ -1,5 +1,6 @@
 <script setup>
 import { ref, watch, computed, onMounted, onUnmounted } from "vue";
+import { useRoomStore } from "@/stores/RoomStore";
 
 const emit = defineEmits(["update:modelValue"]);
 
@@ -23,6 +24,7 @@ const hoveredDate = ref(null);
 
 const startCalendarRef = ref(null);
 const endCalendarRef = ref(null);
+const roomStore = useRoomStore();
 
 // Update local state if props change
 watch(
@@ -173,10 +175,17 @@ const emitUpdate = () => {
     return `${year}-${month}-${day}`;
   };
 
+  const start = formatDateString(startDate.value);
+  const end = formatDateString(endDate.value);
+
+  // Update v-model
   emit("update:modelValue", {
-    start: formatDateString(startDate.value),
-    end: formatDateString(endDate.value),
+    start,
+    end,
   });
+
+  // Persist selection to RoomStore
+  roomStore.setSelectedDates(start, end);
 };
 
 // Close calendar when clicking outside

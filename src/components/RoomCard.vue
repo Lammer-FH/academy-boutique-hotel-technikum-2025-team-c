@@ -1,6 +1,9 @@
 <script setup>
 import { forEachChild } from "typescript";
 import { defineProps, computed, onMounted, toRaw, isProxy } from "vue";
+import { useRouter } from "vue-router";
+import { useBookingStore } from "@/stores/BookingStore";
+import { useRoomStore } from "@/stores/RoomStore";
 
 const props = defineProps({
   room: {
@@ -8,6 +11,21 @@ const props = defineProps({
     required: true,
   },
 });
+
+const router = useRouter();
+const roomStore = useRoomStore();
+const bookingStore = useBookingStore();
+
+const bookRoom = () => {
+  roomStore.setSelectedRoom(props.room);
+  // If from/to dates exist on the room card context, set them too
+  if (props.room.fromDate && props.room.toDate) {
+    roomStore.setSelectedDates(props.room.fromDate, props.room.toDate);
+  }
+  // Ensure BookingView shows the form first
+  bookingStore.setBookingStep("form");
+  router.push({ name: "booking" });
+};
 
 const getRoomImage = computed(() => {
   return new URL(
@@ -156,6 +174,7 @@ const amenities = computed(() => {
           </div>
           <button
             type="button"
+            @click="bookRoom"
             class="inline-flex items-center justify-center gap-1.5 rounded-lg bg-sky-700 text-white px-4 py-3 text-xm font-medium"
           >
             <i class="bi bi-calendar-check text-lg"></i>
