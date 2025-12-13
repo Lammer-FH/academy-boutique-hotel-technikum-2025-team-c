@@ -49,41 +49,71 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="mt-8">
-    <div class="rounded-xl border border-green-200 bg-green-50 p-5">
-      <h3 class="text-lg font-bold text-green-900 mb-2">Buchung bestätigt</h3>
-      <p class="text-sm text-green-800">
-        Ihre Buchung wurde erfolgreich erfasst. Nachstehend die Details.
+  <div class="bg-white rounded-2xl shadow-2xl p-4 sm:p-6">
+    <!-- Success Banner -->
+    <div
+      class="rounded-2xl border-2 border-lime-500 bg-gradient-to-br from-lime-50 to-emerald-50 p-6 sm:p-8 mb-6 sm:mb-8 text-center shadow-sm"
+    >
+      <div
+        class="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-lime-400 to-lime-600 rounded-full mb-3 sm:mb-4 shadow-lg"
+      >
+        <i class="bi bi-check-lg text-white text-3xl sm:text-4xl"></i>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-bold text-green-900 mb-2">
+        Buchung bestätigt!
+      </h2>
+      <p class="text-sm sm:text-base text-green-800">
+        Ihre Buchung wurde erfolgreich erfasst.
       </p>
     </div>
 
-    <div class="mt-4 rounded-xl border border-gray-200 bg-white shadow-sm p-4">
-      <div class="space-y-3 text-sm">
-        <div class="flex items-center justify-between">
-          <span class="text-gray-600">Zimmer</span>
-          <span class="font-medium">
+    <!-- Details Card -->
+    <div
+      class="rounded-xl border-2 border-gray-200 bg-gradient-to-br from-gray-50 to-gray-100 shadow-sm p-4 sm:p-6"
+    >
+      <h3
+        class="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-5 flex items-center gap-2"
+      >
+        <i class="bi bi-receipt text-sky-600 text-xl sm:text-2xl"></i>
+        Buchungsdetails
+      </h3>
+      <div class="space-y-4 sm:space-y-5">
+        <div class="pb-3 sm:pb-4 border-b border-gray-300">
+          <div class="flex items-center gap-2 mb-1">
+            <i class="bi bi-door-open text-sky-700 text-lg sm:text-xl"></i>
+            <span class="text-gray-700 font-semibold">Zimmer</span>
+          </div>
+          <div class="font-medium text-gray-900 text-sm sm:text-base">
             <template v-if="selectedRoom">
               {{ selectedRoom.roomsName }} {{ selectedRoom.roomsNumber }}
             </template>
             <template v-else>—</template>
-          </span>
+          </div>
         </div>
 
-        <div class="flex items-center justify-between">
-          <span class="text-gray-600">Zeitraum</span>
-          <span class="font-medium"
-            >{{ formatDate(fromDate) }} – {{ formatDate(toDate) }}</span
-          >
+        <div class="pb-3 sm:pb-4 border-b border-gray-300">
+          <div class="flex items-center gap-2 mb-1">
+            <i class="bi bi-calendar-range text-sky-700 text-lg sm:text-xl"></i>
+            <span class="text-gray-700 font-semibold">Zeitraum</span>
+          </div>
+          <div class="font-medium text-gray-900 text-sm sm:text-base">
+            {{ formatDate(fromDate) }} – {{ formatDate(toDate) }}
+          </div>
         </div>
 
-        <div class="flex items-center justify-between">
-          <span class="text-gray-600">Bestätigung</span>
-          <span class="font-medium">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <i class="bi bi-hash text-sky-700 text-lg sm:text-xl"></i>
+            <span class="text-gray-700 font-semibold">Buchungsnummer</span>
+          </div>
+          <div class="font-medium text-gray-900 text-sm sm:text-base">
             <template v-if="matchingBooking">
-              #{{ matchingBooking.bookingId || "—" }}
+              {{ matchingBooking.bookingId || "—" }}
             </template>
-            <template v-else>Wird geladen…</template>
-          </span>
+            <template v-else>
+              <span class="text-gray-500 text-sm">Wird geladen…</span>
+            </template>
+          </div>
         </div>
       </div>
     </div>

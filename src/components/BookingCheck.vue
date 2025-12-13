@@ -11,6 +11,15 @@ const fromDate = computed(() => roomStore.selectedFromDate);
 const toDate = computed(() => roomStore.selectedToDate);
 const customer = computed(() => bookingStore.customerDraft);
 
+const getRoomImage = computed(() => {
+  return selectedRoom.value?.id
+    ? new URL(
+        `../assets/img/rooms/Boutique-Hotel-Rooms-${selectedRoom.value.id}.jpg`,
+        import.meta.url
+      ).href
+    : null;
+});
+
 const formatDate = (iso) => {
   if (!iso) return "—";
   try {
@@ -52,66 +61,106 @@ const confirmBooking = async () => {
 </script>
 
 <template>
-  <div class="mt-6">
-    <div class="rounded-xl border border-gray-200 bg-white shadow-sm p-4">
-      <h3 class="text-lg font-semibold text-gray-900 mb-3">Zusammenfassung</h3>
+  <div class="bg-white rounded-2xl shadow-2xl p-6 pt-0">
+    <!-- Room Image -->
+    <div class="mb-8">
+      <div
+        class="relative h-78 overflow-hidden bg-gray-100 -mx-6 rounded-t-2xl"
+      >
+        <img
+          v-if="getRoomImage"
+          :src="getRoomImage"
+          :alt="selectedRoom?.roomsName"
+          class="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </div>
+    </div>
 
-      <div class="space-y-3 text-sm text-gray-800">
-        <div class="flex items-start justify-between">
-          <span class="text-gray-600">Gast</span>
-          <span class="font-medium text-right">
-            {{ customer.firstname || "—" }} {{ customer.lastname || "" }}
-            <template v-if="customer.email">
-              <span class="block text-gray-500 text-xs">{{
-                customer.email
-              }}</span>
-            </template>
-            <template v-if="customer.birthdate">
-              <span class="block text-gray-500 text-xs"
-                >Geburtstag: {{ formatDate(customer.birthdate) }}</span
-              >
-            </template>
-          </span>
+    <!-- Booking Summary -->
+    <div class="mb-8">
+      <h2 class="text-3xl font-bold mb-2 text-gray-900">Zusammenfassung</h2>
+      <p class="text-gray-600 mb-6">
+        Bitte überprüfen Sie Ihre Buchungsdetails.
+      </p>
+
+      <div
+        class="rounded-xl border-2 border-gray-200 bg-gradient-to-br from-gray-50 to-gray-100 shadow-sm p-6"
+      >
+        <div class="space-y-5">
+          <div class="pb-4 border-b border-gray-300">
+            <div class="flex items-center gap-2 mb-1">
+              <i class="bi bi-person-circle text-sky-700 text-xl"></i>
+              <span class="text-gray-700 font-semibold">Gast</span>
+            </div>
+            <div>
+              <div class="font-bold text-gray-900">
+                {{ customer.firstname || "—" }} {{ customer.lastname || "" }}
+              </div>
+              <div v-if="customer.email" class="text-gray-600 text-sm mt-1">
+                {{ customer.email }}
+              </div>
+              <div v-if="customer.birthdate" class="text-gray-500 text-xs mt-1">
+                Geboren: {{ formatDate(customer.birthdate) }}
+              </div>
+            </div>
+          </div>
+
+          <div class="pb-4 border-b border-gray-300">
+            <div class="flex items-center gap-2 mb-1">
+              <i class="bi bi-door-open text-sky-700 text-xl"></i>
+              <span class="text-gray-700 font-semibold">Zimmer</span>
+            </div>
+            <div class="font-bold text-gray-900">
+              <template v-if="selectedRoom">
+                {{ selectedRoom.roomsName }} {{ selectedRoom.roomsNumber }}
+              </template>
+              <template v-else>—</template>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <i class="bi bi-calendar-range text-sky-700 text-xl"></i>
+              <span class="text-gray-700 font-semibold">Zeitraum</span>
+            </div>
+            <div>
+              <div class="font-bold text-gray-900">
+                {{ formatDate(fromDate) }} – {{ formatDate(toDate) }}
+              </div>
+              <div v-if="nights" class="text-gray-600 text-sm mt-1">
+                {{ nights }} Übernachtung<span v-if="nights !== 1">en</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="flex items-center justify-between">
-          <span class="text-gray-600">Zimmer</span>
-          <span class="font-medium">
-            <template v-if="selectedRoom">
-              {{ selectedRoom.roomsName }} {{ selectedRoom.roomsNumber }}
-            </template>
-            <template v-else>—</template>
-          </span>
-        </div>
-
-        <div class="flex items-center justify-between">
-          <span class="text-gray-600">Zeitraum</span>
-          <span class="font-medium">
-            {{ formatDate(fromDate) }} – {{ formatDate(toDate) }}
-            <span v-if="nights" class="text-gray-500 font-normal">
-              ({{ nights }} Nacht<span v-if="nights !== 1">e</span>)</span
-            >
-          </span>
+        <div
+          v-if="error"
+          class="mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg"
+        >
+          {{ error }}
         </div>
       </div>
-      <div v-if="error" class="mt-3 text-sm text-red-600">{{ error }}</div>
+    </div>
 
-      <div class="mt-4 flex items-center gap-3">
-        <button
-          class="inline-flex items-center justify-center gap-1.5 rounded-lg bg-sky-700 text-white px-4 py-2 text-sm font-medium disabled:bg-gray-400"
-          :disabled="loading || !selectedRoom || !fromDate || !toDate"
-          @click="confirmBooking"
-        >
-          <i class="bi bi-check2-circle"></i>
-          Buchung bestätigen
-        </button>
-        <button
-          class="inline-flex items-center justify-center gap-1.5 rounded-lg bg-gray-100 text-gray-700 px-4 py-2 text-sm font-medium border border-gray-300"
-          @click="bookingStore.setBookingStep('form')"
-        >
-          Ändern
-        </button>
-      </div>
+    <!-- Action Buttons -->
+    <div class="flex flex-col sm:flex-row items-stretch gap-4">
+      <button
+        class="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-sky-700 text-white px-6 py-4 text-base font-semibold shadow-md hover:bg-sky-800 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+        :disabled="loading || !selectedRoom || !fromDate || !toDate"
+        @click="confirmBooking"
+      >
+        <i class="bi bi-check2-circle text-xl"></i>
+        <span>{{ loading ? "Wird gebucht..." : "Buchung bestätigen" }}</span>
+      </button>
+      <button
+        class="inline-flex items-center justify-center gap-2 rounded-lg bg-white text-gray-700 px-6 py-4 text-base font-semibold border-2 border-gray-300 hover:bg-gray-50 transition-colors"
+        @click="bookingStore.setBookingStep('form')"
+      >
+        <i class="bi bi-pencil text-lg"></i>
+        <span>Ändern</span>
+      </button>
     </div>
   </div>
 </template>

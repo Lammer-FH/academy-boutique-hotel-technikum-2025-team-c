@@ -10,9 +10,13 @@ const step = computed(() => bookingStore.bookingStep);
 </script>
 
 <template>
-  <div>
-    <BookingForm v-if="step === 'form'" />
-    <BookingCheck v-else-if="step === 'check'" />
-    <BookingConfirmation v-else-if="step === 'confirmation'" />
+  <div
+    class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-100 py-8 px-4"
+  >
+    <div class="max-w-3xl mx-auto mb-4">
+      <BookingForm v-if="step === 'form'" />
+      <BookingCheck v-else-if="step === 'check'" />
+      <BookingConfirmation v-else-if="step === 'confirmation'" />
+    </div>
   </div>
 </template>

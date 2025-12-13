@@ -11,6 +11,15 @@ const selectedRoom = computed(() => roomStore.selectedRoom);
 const displayFromDate = computed(() => roomStore.selectedFromDate);
 const displayToDate = computed(() => roomStore.selectedToDate);
 
+const getRoomImage = computed(() => {
+  return selectedRoom.value?.id
+    ? new URL(
+        `../assets/img/rooms/Boutique-Hotel-Rooms-${selectedRoom.value.id}.jpg`,
+        import.meta.url
+      ).href
+    : null;
+});
+
 const formatDateAT = (iso) => {
   if (!iso) return "—";
   try {
@@ -31,7 +40,7 @@ const formData = ref({
   // Pre-fill confirm to match email so validation passes when returning
   confirmEmail: bookingStore.customerDraft?.email || "",
   birthdate: bookingStore.customerDraft?.birthdate || "",
-  breakfast: "",
+  breakfast: false,
 });
 
 const error = ref(null);
@@ -73,23 +82,44 @@ watch(
 </script>
 
 <template>
-  <div class="booking-form-container">
-    <h2 class="text-2xl font-bold mb-6">Raum buchen</h2>
-
-    <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-      <h3 class="text-lg font-semibold text-blue-900">
-        {{ selectedRoom?.roomsName }} {{ selectedRoom?.roomsNumber }}
-      </h3>
-      <p class="text-sm text-blue-800 mt-2">
-        Aufenthalt:
-        <span class="font-medium">{{ formatDateAT(displayFromDate) }}</span> bis
-        <span class="font-medium">{{ formatDateAT(displayToDate) }}</span>
-      </p>
+  <div class="bg-white rounded-2xl shadow-2xl p-6 pt-0">
+    <div class="mb-4">
+      <div
+        class="group relative h-78 overflow-hidden bg-gray-100 -mx-6 rounded-t-2xl"
+      >
+        <img
+          v-if="getRoomImage"
+          :src="getRoomImage"
+          :alt="selectedRoom?.roomsName"
+          class="w-full h-full object-cover"
+          loading="lazy"
+        />
+        <div class="absolute inset-x-0 top-0 md:top-auto md:bottom-0">
+          <div
+            class="m-3 rounded-xl px-4 py-3 bg-white/85 backdrop-blur-sm border border-white/60 shadow-sm"
+          >
+            <h3 class="text-base font-bold text-gray-900">
+              {{ selectedRoom?.roomsName }} {{ selectedRoom?.roomsNumber }}
+            </h3>
+            <p class="text-xs text-gray-700 mt-1 flex items-center gap-2">
+              <i class="bi bi-calendar-event"></i>
+              <span class="font-medium">{{
+                formatDateAT(displayFromDate)
+              }}</span>
+              <span class="text-gray-400">→</span>
+              <span class="font-medium">{{ formatDateAT(displayToDate) }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <form @submit.prevent="handleSubmit" class="space-y-4">
+    <form @submit.prevent="handleSubmit" class="space-y-5">
       <div>
-        <label for="firstname" class="block text-sm font-medium mb-1">
+        <label
+          for="firstname"
+          class="block text-sm font-semibold mb-2 text-gray-700"
+        >
           Vorname
         </label>
         <input
@@ -97,13 +127,16 @@ watch(
           v-model="formData.firstname"
           type="text"
           required
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="Enter your first name"
+          class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+          placeholder="Vorname"
         />
       </div>
 
       <div>
-        <label for="lastname" class="block text-sm font-medium mb-1">
+        <label
+          for="lastname"
+          class="block text-sm font-semibold mb-2 text-gray-700"
+        >
           Nachname
         </label>
         <input
@@ -111,13 +144,16 @@ watch(
           v-model="formData.lastname"
           type="text"
           required
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="Enter your last name"
+          class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+          placeholder="Nachname"
         />
       </div>
 
       <div>
-        <label for="email" class="block text-sm font-medium mb-1">
+        <label
+          for="email"
+          class="block text-sm font-semibold mb-2 text-gray-700"
+        >
           E-Mail
         </label>
         <input
@@ -125,13 +161,16 @@ watch(
           v-model="formData.email"
           type="email"
           required
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="Enter your email"
+          class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+          placeholder="E-Mail"
         />
       </div>
 
       <div>
-        <label for="confirmEmail" class="block text-sm font-medium mb-1">
+        <label
+          for="confirmEmail"
+          class="block text-sm font-semibold mb-2 text-gray-700"
+        >
           E-Mail bestätigen
         </label>
         <input
@@ -139,13 +178,16 @@ watch(
           v-model="formData.confirmEmail"
           type="email"
           required
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          placeholder="Confirm your email"
+          class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
+          placeholder="E-Mail bestätigen"
         />
       </div>
 
       <div>
-        <label for="birthdate" class="block text-sm font-medium mb-1">
+        <label
+          for="birthdate"
+          class="block text-sm font-semibold mb-2 text-gray-700"
+        >
           Geburtsdatum
         </label>
         <input
@@ -153,31 +195,43 @@ watch(
           v-model="formData.birthdate"
           type="date"
           required
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors"
         />
       </div>
       <div>
-        <span class="block text-sm font-medium mb-1">Frühstück</span>
-        <div class="flex items-center gap-6">
-          <label class="inline-flex items-center gap-2">
+        <span class="block text-sm font-semibold mb-2 text-gray-700"
+          >Frühstück</span
+        >
+        <div class="grid grid-cols-2 gap-3">
+          <label class="cursor-pointer">
             <input
               type="radio"
               name="breakfast"
-              value="Ja"
+              :value="false"
               v-model="formData.breakfast"
-              class="text-blue-600 focus:ring-blue-500"
+              class="peer sr-only"
             />
-            <span>Ja</span>
+            <div
+              class="p-3 border-2 border-gray-300 rounded-lg text-center hover:bg-gray-50 peer-checked:border-sky-600 peer-checked:bg-sky-50 peer-checked:text-sky-700 transition-colors"
+            >
+              <i class="bi bi-ban text-lg mr-2"></i>
+              <span class="font-medium">ohne Verpflegung</span>
+            </div>
           </label>
-          <label class="inline-flex items-center gap-2">
+          <label class="cursor-pointer">
             <input
               type="radio"
               name="breakfast"
-              value="Nein"
+              :value="true"
               v-model="formData.breakfast"
-              class="text-blue-600 focus:ring-blue-500"
+              class="peer sr-only"
             />
-            <span>Nein</span>
+            <div
+              class="p-3 border-2 border-gray-300 rounded-lg text-center hover:bg-gray-50 peer-checked:border-sky-600 peer-checked:bg-sky-50 peer-checked:text-sky-700 transition-colors"
+            >
+              <i class="bi bi-cup-hot text-lg mr-2"></i>
+              <span class="font-medium">inkl. Frühstück</span>
+            </div>
           </label>
         </div>
       </div>
@@ -199,7 +253,7 @@ watch(
       <button
         type="submit"
         :disabled="loading"
-        class="w-full py-3 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+        class="w-full py-3 px-4 bg-sky-700 text-white font-semibold rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
       >
         Buchen
       </button>
