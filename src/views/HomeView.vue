@@ -5,8 +5,8 @@
     <!-- Hero -->
     <section class="relative bg-gray-50">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center py-20">
-          <div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch py-20">
+          <div class="flex flex-col justify-between">
             <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl">
               Willkommen im Boutique Hotel Technikum
             </h1>
@@ -16,24 +16,18 @@
               — perfekt für Erholung, Arbeit und besondere Anlässe.
             </p>
 
-            <div class="mt-8 flex flex-wrap gap-4">
+            <div class="mt-8 flex flex-col gap-4 w-full">
               <router-link
                 to="/rooms"
-                class="inline-flex items-center gap-2 px-5 py-3 bg-sky-700 text-white rounded-md hover:bg-sky-800"
+                class="inline-flex items-center justify-center gap-2 px-5 py-3 bg-sky-700 text-white rounded-lg shadow-md hover:bg-sky-800 hover:shadow-lg transition-colors w-full"
               >
-                Zimmer ansehen
-              </router-link>
-
-              <router-link
-                to="/book"
-                class="inline-flex items-center gap-2 px-5 py-3 border border-sky-700 text-sky-700 rounded-md hover:bg-sky-50"
-              >
-                Jetzt buchen
+                <i class="bi bi-door-open text-lg"></i>
+                <span class="text-base font-semibold">Zimmer ansehen</span>
               </router-link>
             </div>
           </div>
 
-          <div class="rounded-lg overflow-hidden shadow-lg">
+          <div class="rounded-lg overflow-hidden shadow-lg self-end">
             <img
               src="../assets/img/boutique-technikum-hotel-room-1.png"
               alt="Boutique Hotel Room"

@@ -69,7 +69,7 @@ const links = [
             <span>ANMELDEN</span>
           </router-link>
           <router-link
-            to="/book"
+            to="/rooms"
             class="inline-flex items-center gap-2 px-4 py-2 bg-sky-700 text-white text-sm font-medium rounded-md hover:bg-sky-800"
           >
             <svg
@@ -145,6 +145,7 @@ const links = [
             :key="link.text"
             :to="link.to"
             class="flex items-center gap-3 px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+            @click="open = false"
           >
             <svg
               v-if="link.icon === 'rooms'"
@@ -183,6 +184,7 @@ const links = [
           <router-link
             to="/signin"
             class="flex items-center gap-2 text-base font-medium text-gray-700 hover:text-gray-900"
+            @click="open = false"
           >
             <svg
               aria-hidden="true"
@@ -202,8 +204,9 @@ const links = [
         </div>
         <div class="pt-4 pb-4 px-4 border-t border-gray-100">
           <router-link
-            to="/book"
+            to="/rooms"
             class="mt-3 inline-flex items-center gap-2 w-full justify-center px-4 py-2 bg-sky-700 text-white font-medium rounded-md hover:bg-sky-800"
+            @click="open = false"
           >
             <svg
               aria-hidden="true"
