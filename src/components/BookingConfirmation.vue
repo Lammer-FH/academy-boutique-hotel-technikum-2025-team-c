@@ -33,9 +33,7 @@ const matchingBooking = computed(() => {
       const bfrom = b?.from ?? b?.fromDate;
       const bto = b?.to ?? b?.toDate;
       return bid === roomId && bfrom === fromDate.value && bto === toDate.value;
-    }) ||
-    bookingStore.currentBooking ||
-    null
+    }) || null
   );
 });
 
@@ -43,7 +41,7 @@ onMounted(async () => {
   try {
     await bookingStore.fetchBookings();
   } catch (e) {
-    // error is handled in store
+    console.error("Failed to fetch bookings:", e);
   }
 });
 </script>
