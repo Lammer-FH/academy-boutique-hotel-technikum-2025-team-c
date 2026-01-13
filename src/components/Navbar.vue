@@ -12,9 +12,9 @@ const links = [
 <template>
   <nav class="bg-white shadow">
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="relative flex justify-between h-16 items-center">
+      <div class="relative flex h-16 items-center">
         <!-- Brand -->
-        <div class="flex items-center">
+        <div class="flex items-center shrink-0">
           <router-link
             to="/"
             class="flex items-center space-x-3 relative z-50 pointer-events-auto"
@@ -33,7 +33,7 @@ const links = [
 
         <!-- Desktop links -->
         <div
-          class="hidden [@media(min-width:940px)]:flex [@media(min-width:940px)]:absolute [@media(min-width:940px)]:inset-x-0 [@media(min-width:940px)]:top-1/2 [@media(min-width:940px)]:-translate-y-1/2 [@media(min-width:940px)]:items-center [@media(min-width:940px)]:justify-center [@media(min-width:940px)]:space-x-8"
+          class="hidden [@media(min-width:940px)]:flex [@media(min-width:940px)]:flex-1 [@media(min-width:940px)]:items-center [@media(min-width:940px)]:justify-center [@media(min-width:940px)]:space-x-8"
         >
           <router-link
             v-for="link in links"
@@ -47,7 +47,7 @@ const links = [
 
         <!-- Actions (desktop) -->
         <div
-          class="hidden [@media(min-width:940px)]:flex [@media(min-width:940px)]:items-center [@media(min-width:940px)]:space-x-4"
+          class="hidden [@media(min-width:940px)]:flex [@media(min-width:940px)]:items-center [@media(min-width:940px)]:space-x-4 shrink-0"
         >
           <router-link
             to="/signin"
@@ -90,7 +90,7 @@ const links = [
         </div>
 
         <!-- Mobile menu button -->
-        <div class="[@media(min-width:940px)]:hidden">
+        <div class="[@media(min-width:940px)]:hidden ml-auto">
           <button
             @click="open = !open"
             type="button"
