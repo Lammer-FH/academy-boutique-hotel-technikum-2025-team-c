@@ -26,4 +26,10 @@
 .border-top {
   border-top: 1px solid rgb(200, 203, 207);
 }
+
+@media print {
+  footer {
+    display: none !important;
+  }
+}
 </style>

@@ -90,7 +90,7 @@ const links = [
         </div>
 
         <!-- Mobile menu button -->
-        <div class="[@media(min-width:940px)]:hidden ml-auto">
+        <div class="mobile-menu-toggle [@media(min-width:940px)]:hidden ml-auto">
           <button
             @click="open = !open"
             type="button"
@@ -228,3 +228,11 @@ const links = [
     </transition>
   </nav>
 </template>
+
+<style scoped>
+@media print {
+  .mobile-menu-toggle {
+    display: none !important;
+  }
+}
+</style>

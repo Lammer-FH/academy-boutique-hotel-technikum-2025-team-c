@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, computed, onMounted, toRaw, isProxy } from "vue";
+import { computed } from "vue";
 import { useRouter } from "vue-router";
 import { useBookingStore } from "@/stores/BookingStore";
 import { useRoomStore } from "@/stores/RoomStore";
@@ -8,6 +8,14 @@ const props = defineProps({
   room: {
     type: Object,
     required: true,
+  },
+  hidePrice: {
+    type: Boolean,
+    default: false,
+  },
+  hideBookButton: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -45,6 +53,8 @@ const bedsLabel = computed(() =>
     ? `${props.room.beds} ${props.room.beds === 1 ? "Bett" : "Betten"}`
     : ""
 );
+
+const showFooter = computed(() => !props.hidePrice || !props.hideBookButton);
 
 /* VALSKY - props.room.extras is a proxy array with proxy objects -> this function
 converts it to a normal array with normal objects */
@@ -98,7 +108,7 @@ const amenities = computed(() => {
       />
       <!-- Price Badge -->
       <div
-        v-if="price"
+        v-if="price && !props.hidePrice"
         class="absolute top-3 right-3 bg-gradient-to-r from-lime-500 to-lime-600 text-white text-xm font-semibold px-4 py-2 rounded-lg shadow-lg backdrop-blur-sm"
       >
         {{ price }}
@@ -161,9 +171,9 @@ const amenities = computed(() => {
       </div>
 
       <!-- Divider -->
-      <div class="border-t border-gray-200 pt-3">
+      <div v-if="showFooter" class="border-t border-gray-200 pt-3">
         <div class="flex items-center justify-between">
-          <div class="text-left">
+          <div v-if="!props.hidePrice" class="text-left">
             <p class="text-xs text-gray-500 uppercase tracking-wide">
               Pro Nacht
             </p>
@@ -172,6 +182,7 @@ const amenities = computed(() => {
             </p>
           </div>
           <button
+            v-if="!props.hideBookButton"
             type="button"
             @click="bookRoom"
             class="inline-flex items-center justify-center gap-1.5 rounded-lg bg-sky-700 text-white px-4 py-3 text-xm font-medium"

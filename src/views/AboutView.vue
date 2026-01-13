@@ -1,3 +1,7 @@
+<script setup>
+import Maps from "@/components/Maps.vue";
+</script>
+
 <template>
   <main class="min-h-screen bg-white">
     <!-- Hero -->
@@ -67,6 +71,16 @@
         <li>24/7 Rezeption</li>
         <li>Konferenz- und Veranstaltungsräume</li>
       </ul>
+    </section>
+
+    <!-- Map / Directions -->
+    <section class="bg-gray-50 py-12">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-bold text-gray-900">Anfahrt</h2>
+        <div class="mt-6">
+          <Maps address="Höchstädtplatz 6, 1200 Wien" />
+        </div>
+      </div>
     </section>
 
     <!-- Contact CTA -->
