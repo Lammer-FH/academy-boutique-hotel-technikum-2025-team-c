@@ -1,12 +1,35 @@
 <script setup>
-import { ref } from "vue";
+import { computed, onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/UserStore";
 
 const open = ref(false);
+
+const userStore = useUserStore();
+const router = useRouter();
+const accountLabel = computed(() => userStore.user?.username || "KONTO");
+const isLoggedIn = computed(() => Boolean(userStore.token));
+
+onMounted(async () => {
+  if (userStore.token && !userStore.user) {
+    try {
+      await userStore.fetchCurrentUser();
+    } catch {
+      // error already stored; keep fallback label
+    }
+  }
+});
 
 const links = [
   { text: "ZIMMER", to: "/rooms", icon: "rooms" },
   { text: "ÜBER UNS", to: "/about", icon: "about" },
 ];
+
+const logout = async () => {
+  userStore.logout();
+  open.value = false;
+  await router.push({ name: "home" });
+};
 </script>
 
 <template>
@@ -66,8 +89,32 @@ const links = [
               <circle cx="12" cy="8" r="4" />
               <path d="M6 20c0-3.314 2.686-6 6-6s6 2.686 6 6" />
             </svg>
-            <span>KONTO</span>
+            <span>{{ accountLabel }}</span>
           </router-link>
+
+      <button
+        v-if="isLoggedIn"
+        type="button"
+        @click="logout"
+        class="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md border border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+      >
+        <svg
+          aria-hidden="true"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+          <path d="M10 17l5-5-5-5" />
+          <path d="M15 12H3" />
+        </svg>
+        <span>Logout</span>
+      </button>
+
           <router-link
             to="/rooms"
             class="inline-flex items-center gap-2 px-4 py-2 bg-sky-700 text-white text-sm font-medium rounded-md hover:bg-sky-800"
@@ -199,8 +246,31 @@ const links = [
               <circle cx="12" cy="8" r="4" />
               <path d="M6 20c0-3.314 2.686-6 6-6s6 2.686 6 6" />
             </svg>
-            <span>KONTO</span>
+            <span>{{ accountLabel }}</span>
           </router-link>
+
+      <button
+        v-if="isLoggedIn"
+        type="button"
+        class="mt-3 inline-flex items-center gap-2 w-full justify-center px-4 py-2 border border-gray-200 text-gray-700 font-medium rounded-md hover:bg-gray-50"
+        @click="logout"
+      >
+        <svg
+          aria-hidden="true"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+          <path d="M10 17l5-5-5-5" />
+          <path d="M15 12H3" />
+        </svg>
+        <span>Logout</span>
+      </button>
         </div>
         <div class="pt-4 pb-4 px-4 border-t border-gray-100">
           <router-link
