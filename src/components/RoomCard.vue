@@ -1,8 +1,9 @@
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useBookingStore } from "@/stores/BookingStore";
 import { useRoomStore } from "@/stores/RoomStore";
+import BookingAccountModal from "./BookingAccountModal.vue";
 
 const props = defineProps({
   room: {
@@ -22,8 +23,13 @@ const props = defineProps({
 const router = useRouter();
 const roomStore = useRoomStore();
 const bookingStore = useBookingStore();
+const showModal = ref(false);
 
 const bookRoom = () => {
+  showModal.value = true;
+};
+
+const handleGuestType = (type) => {
   roomStore.setSelectedRoom(props.room);
   // If from/to dates exist on the room card context, set them too
   if (props.room.fromDate && props.room.toDate) {
@@ -31,7 +37,17 @@ const bookRoom = () => {
   }
   // Ensure BookingView shows the form first
   bookingStore.setBookingStep("form");
+
+  if (type === "registered") {
+    router.push({ name: "user", query: { next: "booking" } });
+    return;
+  }
+
   router.push({ name: "booking" });
+};
+
+const closeModal = () => {
+  showModal.value = false;
 };
 
 const getRoomImage = computed(() => {
@@ -193,5 +209,12 @@ const amenities = computed(() => {
         </div>
       </div>
     </div>
+
+    <!-- Booking Account Modal -->
+    <BookingAccountModal
+      v-if="showModal"
+      @close="closeModal"
+      @selectGuestType="handleGuestType"
+    />
   </article>
 </template>

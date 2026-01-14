@@ -1,8 +1,19 @@
 <script setup>
-import { computed, reactive } from "vue";
+import { computed, reactive, watch } from "vue";
+import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/UserStore";
+import { useBookingStore } from "@/stores/BookingStore";
+
+const props = defineProps({
+	next: {
+		type: [String, null],
+		default: null,
+	},
+});
 
 const userStore = useUserStore();
+const bookingStore = useBookingStore();
+const router = useRouter();
 
 const form = reactive({
 	firstname: "",
@@ -17,6 +28,24 @@ const form = reactive({
 const loading = computed(() => userStore.loading);
 const error = computed(() => userStore.error);
 const registeredUser = computed(() => userStore.registeredUser);
+
+const shouldRedirectToBooking = computed(() => props.next === "booking");
+
+watch(
+	registeredUser,
+	(val) => {
+		if (!val || !shouldRedirectToBooking.value) return;
+		bookingStore.setCustomerDraft({
+			firstname: form.firstname,
+			lastname: form.lastname,
+			email: form.email,
+			birthdate: bookingStore.customerDraft?.birthdate || "",
+		});
+		bookingStore.setBookingStep("form");
+		router.push({ name: "booking" });
+	},
+	{ flush: "post" }
+);
 
 const emailsMatch = computed(
 	() => form.email && form.emailRepeat && form.email === form.emailRepeat
@@ -81,13 +110,6 @@ const reset = () => {
 				<div class="text-sm mt-1">
 					Ihr Konto wurde erstellt.
 				</div>
-				<button
-					type="button"
-					class="mt-4 inline-flex items-center justify-center rounded-lg bg-sky-700 text-white px-4 py-2 text-sm font-medium hover:bg-sky-800"
-					@click="reset"
-				>
-					Neues Konto anlegen
-				</button>
 			</div>
 
 			<form v-else class="mt-6 space-y-4" @submit.prevent="submit">
@@ -205,7 +227,13 @@ const reset = () => {
 					:disabled="loading || !canSubmit"
 					class="w-full inline-flex items-center justify-center rounded-lg bg-sky-700 text-white px-4 py-3 text-sm font-semibold hover:bg-sky-800 disabled:bg-gray-400 disabled:cursor-not-allowed"
 				>
-					{{ loading ? "Wird registriert..." : "Registrieren" }}
+					{{
+						loading
+							? "Wird registriert..."
+							: shouldRedirectToBooking
+								? "Registrieren und weiter zur Buchung..."
+								: "Registrieren"
+					}}
 				</button>
 			</form>
 		</div>
