@@ -30,6 +30,11 @@ const router = createRouter({
       component: () => import("../views/BookingView.vue"),
       props: true,
     },
+    {
+      path: "/user",
+      name: "user",
+      component: () => import("../views/UserView.vue"),
+    },
   ],
 });
 

@@ -50,7 +50,7 @@ const links = [
           class="hidden [@media(min-width:940px)]:flex [@media(min-width:940px)]:items-center [@media(min-width:940px)]:space-x-4 shrink-0"
         >
           <router-link
-            to="/signin"
+            to="/user"
             class="inline-flex items-center gap-2 text-sm text-gray-700 hover:text-gray-900"
           >
             <svg
@@ -66,7 +66,7 @@ const links = [
               <circle cx="12" cy="8" r="4" />
               <path d="M6 20c0-3.314 2.686-6 6-6s6 2.686 6 6" />
             </svg>
-            <span>ANMELDEN</span>
+            <span>KONTO</span>
           </router-link>
           <router-link
             to="/rooms"
@@ -182,7 +182,7 @@ const links = [
 
         <div class="pt-4 pb-4 px-4 border-t border-gray-100">
           <router-link
-            to="/signin"
+            to="/user"
             class="flex items-center gap-2 text-base font-medium text-gray-700 hover:text-gray-900"
             @click="open = false"
           >
@@ -199,7 +199,7 @@ const links = [
               <circle cx="12" cy="8" r="4" />
               <path d="M6 20c0-3.314 2.686-6 6-6s6 2.686 6 6" />
             </svg>
-            <span>ANMELDEN</span>
+            <span>KONTO</span>
           </router-link>
         </div>
         <div class="pt-4 pb-4 px-4 border-t border-gray-100">
