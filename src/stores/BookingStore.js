@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export const useBookingStore = defineStore("booking", {
   state: () => ({
     currentBooking: null,
@@ -24,7 +26,7 @@ export const useBookingStore = defineStore("booking", {
       this.error = null;
       try {
         const { data, status, statusText } = await axios.get(
-          `https://boutique-hotel.helmuth-lammer.at/api/v1/bookings`,
+          `${apiUrl}/bookings`,
           {
             headers: { "Content-Type": "application/json" },
           }
@@ -48,7 +50,7 @@ export const useBookingStore = defineStore("booking", {
 
       try {
         const { data, status, statusText } = await axios.post(
-          `https://boutique-hotel.helmuth-lammer.at/api/v1/room/${roomId}/from/${fromDate}/to/${toDate}`,
+          `${apiUrl}/room/${roomId}/from/${fromDate}/to/${toDate}`,
           {
             firstname: formData.firstname,
             lastname: formData.lastname,

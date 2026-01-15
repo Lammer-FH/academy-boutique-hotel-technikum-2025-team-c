@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export const useUserStore = defineStore("user", {
 	state: () => ({
 		loading: false,
@@ -21,7 +23,7 @@ export const useUserStore = defineStore("user", {
 			this.error = null;
 			try {
 				const { data, status, statusText } = await axios.get(
-					"https://boutique-hotel.helmuth-lammer.at/api/v1/user/",
+					`${apiUrl}/user/`,
 					{
 						headers: {
 							Authorization: `Bearer ${this.token}`,
@@ -51,7 +53,7 @@ export const useUserStore = defineStore("user", {
 			this.error = null;
 			try {
 				const { data, status, statusText } = await axios.post(
-					"https://boutique-hotel.helmuth-lammer.at/api/v1/login",
+					`${apiUrl}/login`,
 					{
 						clientId: payload?.clientId,
 						secret: payload?.secret,
@@ -91,7 +93,7 @@ export const useUserStore = defineStore("user", {
 
 			try {
 				const { data, status, statusText } = await axios.post(
-					"https://boutique-hotel.helmuth-lammer.at/api/v1/register",
+					`${apiUrl}/register`,
 					{
 						firstname: payload?.firstname,
 						lastname: payload?.lastname,
