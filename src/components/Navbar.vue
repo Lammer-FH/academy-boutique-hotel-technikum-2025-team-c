@@ -76,19 +76,13 @@ const logout = async () => {
             to="/user"
             class="inline-flex items-center gap-2 text-sm text-gray-700 hover:text-gray-900"
           >
-            <svg
+            <i
               aria-hidden="true"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="12" cy="8" r="4" />
-              <path d="M6 20c0-3.314 2.686-6 6-6s6 2.686 6 6" />
-            </svg>
+              :class="[
+                isLoggedIn ? 'bi bi-person-fill' : 'bi bi-person',
+                'text-lg leading-none',
+              ]"
+            ></i>
             <span>{{ accountLabel }}</span>
           </router-link>
 
@@ -137,7 +131,24 @@ const logout = async () => {
         </div>
 
         <!-- Mobile menu button -->
-        <div class="mobile-menu-toggle [@media(min-width:940px)]:hidden ml-auto">
+        <div
+          class="mobile-menu-toggle [@media(min-width:940px)]:hidden ml-auto flex items-center gap-2"
+        >
+          <router-link
+            v-if="!open"
+            to="/user"
+            aria-label="Konto"
+            class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+          >
+            <i
+              aria-hidden="true"
+              :class="[
+                isLoggedIn ? 'bi bi-person-fill' : 'bi bi-person',
+                'text-xl leading-none',
+              ]"
+            ></i>
+          </router-link>
+
           <button
             @click="open = !open"
             type="button"
@@ -233,19 +244,13 @@ const logout = async () => {
             class="flex items-center gap-2 text-base font-medium text-gray-700 hover:text-gray-900"
             @click="open = false"
           >
-            <svg
+            <i
               aria-hidden="true"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="12" cy="8" r="4" />
-              <path d="M6 20c0-3.314 2.686-6 6-6s6 2.686 6 6" />
-            </svg>
+              :class="[
+                isLoggedIn ? 'bi bi-person-fill' : 'bi bi-person',
+                'text-lg leading-none',
+              ]"
+            ></i>
             <span>{{ accountLabel }}</span>
           </router-link>
 

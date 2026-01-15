@@ -58,12 +58,9 @@ const handleClose = () => {
 							<i class="bi bi-person-check-fill text-xl"></i>
 						</div>
 						<div class="flex-1">
-							<h3 class="text-lg font-bold text-gray-900 mb-1">
+							<h3 class="text-md font-bold text-gray-900 mb-1">
 								Als registrierter Benutzer
 							</h3>
-							<p class="text-sm text-gray-600">
-								Nutzen Sie Ihr Konto für eine schnellere Buchung
-							</p>
 						</div>
 						<div
 							class="flex-shrink-0 text-sky-700 group-hover:translate-x-1 transition-transform"
@@ -86,12 +83,9 @@ const handleClose = () => {
 							<i class="bi bi-person-fill text-xl"></i>
 						</div>
 						<div class="flex-1">
-							<h3 class="text-lg font-bold text-gray-900 mb-1">
+							<h3 class="text-md font-bold text-gray-900 mb-1">
 								Als Gast fortfahren
 							</h3>
-							<p class="text-sm text-gray-600">
-								Buchen Sie ohne Konto - keine Registrierung erforderlich
-							</p>
 						</div>
 						<div
 							class="flex-shrink-0 text-gray-700 group-hover:translate-x-1 transition-transform"

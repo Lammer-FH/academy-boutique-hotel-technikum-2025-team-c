@@ -3,6 +3,7 @@ import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useBookingStore } from "@/stores/BookingStore";
 import { useRoomStore } from "@/stores/RoomStore";
+import { useUserStore } from "@/stores/UserStore";
 import BookingAccountModal from "./BookingAccountModal.vue";
 
 const props = defineProps({
@@ -23,13 +24,12 @@ const props = defineProps({
 const router = useRouter();
 const roomStore = useRoomStore();
 const bookingStore = useBookingStore();
+const userStore = useUserStore();
 const showModal = ref(false);
 
-const bookRoom = () => {
-  showModal.value = true;
-};
+const isLoggedIn = computed(() => Boolean(userStore.token));
 
-const handleGuestType = (type) => {
+const proceedToBooking = () => {
   roomStore.setSelectedRoom(props.room);
   // If from/to dates exist on the room card context, set them too
   if (props.room.fromDate && props.room.toDate) {
@@ -37,13 +37,50 @@ const handleGuestType = (type) => {
   }
   // Ensure BookingView shows the form first
   bookingStore.setBookingStep("form");
+  router.push({ name: "booking" });
+};
 
+const bookRoom = async () => {
+  // If already logged in: skip modal and prefill booking form
+  if (isLoggedIn.value) {
+    showModal.value = false;
+    try {
+      if (!userStore.user) {
+        await userStore.fetchCurrentUser();
+      }
+    } catch {
+      // ignore; user data may not be available
+    }
+
+    if (userStore.user) {
+      bookingStore.setCustomerDraft({
+        firstname: userStore.user?.firstname || "",
+        lastname: userStore.user?.lastname || "",
+        email: userStore.user?.email || "",
+        birthdate:
+          userStore.user?.birthdate || bookingStore.customerDraft?.birthdate || "",
+      });
+    }
+
+    proceedToBooking();
+    return;
+  }
+
+  showModal.value = true;
+};
+
+const handleGuestType = (type) => {
   if (type === "registered") {
+    roomStore.setSelectedRoom(props.room);
+    if (props.room.fromDate && props.room.toDate) {
+      roomStore.setSelectedDates(props.room.fromDate, props.room.toDate);
+    }
+    bookingStore.setBookingStep("form");
     router.push({ name: "user", query: { next: "booking" } });
     return;
   }
 
-  router.push({ name: "booking" });
+  proceedToBooking();
 };
 
 const closeModal = () => {
@@ -212,7 +249,7 @@ const amenities = computed(() => {
 
     <!-- Booking Account Modal -->
     <BookingAccountModal
-      v-if="showModal"
+      v-if="showModal && !isLoggedIn"
       @close="closeModal"
       @selectGuestType="handleGuestType"
     />
