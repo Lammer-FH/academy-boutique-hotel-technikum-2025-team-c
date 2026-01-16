@@ -19,11 +19,7 @@ const showRegister = ref(false);
 
 onMounted(async () => {
 	if (token.value && !user.value) {
-		try {
 			await userStore.fetchCurrentUser();
-		} catch {
-			// error already stored
-		}
 	}
 });
 </script>
