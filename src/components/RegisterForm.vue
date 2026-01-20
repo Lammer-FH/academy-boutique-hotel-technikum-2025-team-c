@@ -74,11 +74,7 @@ const canSubmit = computed(() =>
 
 const submit = async () => {
 	if (!canSubmit.value || loading.value) return;
-	try {
 		await userStore.register({ ...form });
-	} catch {
-		// error already stored
-	}
 };
 
 const reset = () => {

@@ -71,11 +71,7 @@ export const useUserStore = defineStore("user", {
 				this.token = token || null;
 				if (this.token) localStorage.setItem("authToken", this.token);
 				if (this.token) {
-					try {
 						await this.fetchCurrentUser();
-					} catch {
-						// ignore; error already stored
-					}
 				}
 				return this.token;
 			} catch (error) {
