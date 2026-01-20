@@ -94,7 +94,7 @@ import Maps from "@/components/Maps.vue";
         </p>
         <div class="mt-6 flex justify-center gap-4">
           <router-link
-            to="/book"
+            to="/rooms"
             class="px-4 py-2 bg-white text-sky-700 rounded-md"
             >Buchen</router-link
           >
