@@ -30,7 +30,6 @@ const shouldRedirectToBooking = computed(() => props.next === "booking");
 
 const submit = async () => {
 	if (!canSubmit.value || loading.value) return;
-	try {
 		await userStore.login({
 			clientId: form.username,
 			secret: form.password,
@@ -40,9 +39,6 @@ const submit = async () => {
 			bookingStore.setBookingStep("form");
 			router.push({ name: "booking" });
 		}
-	} catch {
-		// error already stored
-	}
 };
 
 const goRegister = () => emit("goRegister");
