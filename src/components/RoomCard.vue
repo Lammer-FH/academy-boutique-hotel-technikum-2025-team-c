@@ -110,7 +110,7 @@ const normalizedExtrasArray = computed(() => {
   return Array.from(props.room.extras).map((extra) => ({ ...extra }));
 });
 
-// Associative extras map { key: boolean }
+// VALSKY - Associative extras map { key: boolean }
 const mappedExtras = computed(() => {
   return normalizedExtrasArray.value.reduce((acc, extra) => {
     const key = Object.keys(extra)[0];
