@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import LoginForm from "@/components/LoginForm.vue";
 import RegisterForm from "@/components/RegisterForm.vue";
+import BookedRooms from "@/components/BookedRooms.vue";
 import { useUserStore } from "@/stores/UserStore";
 
 const route = useRoute();
@@ -18,11 +19,7 @@ const showRegister = ref(false);
 
 onMounted(async () => {
 	if (token.value && !user.value) {
-		try {
 			await userStore.fetchCurrentUser();
-		} catch {
-			// error already stored
-		}
 	}
 });
 </script>
@@ -53,6 +50,8 @@ onMounted(async () => {
 					<div class="mt-1 font-semibold text-gray-900">{{ user.lastname }}</div>
 				</div>
 			</div>
+
+			<BookedRooms :bookings="user.bookings" />
 		</div>
 	</div>
 
