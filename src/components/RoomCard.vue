@@ -44,14 +44,9 @@ const bookRoom = async () => {
   // If already logged in: skip modal and prefill booking form
   if (isLoggedIn.value) {
     showModal.value = false;
-    try {
       if (!userStore.user) {
         await userStore.fetchCurrentUser();
       }
-    } catch {
-      // ignore; user data may not be available
-    }
-
     if (userStore.user) {
       bookingStore.setCustomerDraft({
         firstname: userStore.user?.firstname || "",
